@@ -5,6 +5,8 @@
 import os
 import sys
 sys.path.insert(0,os.path.abspath(".."))
+# sys.path.insert(0, os.path.abspath(r'C:\\Users\\TJO1COB\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\dataxpress-core-9PFg3P9X-py3.11\\Lib\\site-packages'))
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
