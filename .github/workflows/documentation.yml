@@ -29,9 +29,8 @@
 name: Build and Deploy Documentation
 
 on:
-  push:
-    branches:
-      - main  # Adjust this to your main branch name
+  push
+
 
 jobs:
   build:
@@ -44,13 +43,11 @@ jobs:
       - name: Set Up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x  # Choose your Python version
+          python-version: 3.8
 
       - name: Install Dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r docs/requirements.txt  # If you have a requirements file for Sphinx dependencies
-
+          pip install sphinx sphinx_rtd_theme
       - name: Build Documentation
         run: |
           cd docs
