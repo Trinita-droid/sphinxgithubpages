@@ -1,0 +1,35 @@
+name: Build and Deploy Sphinx Documentation
+
+on:
+  push:
+ # Trigger the workflow on pushes to the sphinx branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          
+          pip install sphinx
+
+      - name: Build Sphinx documentation
+        run: |
+          # Replace 'docs' with the actual path to your Sphinx documentation source
+          sphinx-build -b html docs _build/html
+
+      - name: Deploy to gh-pages
+        run: |
+          git checkout -B gh-pages
+          git add -f _build/html
+          git commit -m "Automated Sphinx documentation build"
+          git push origin gh-pages
