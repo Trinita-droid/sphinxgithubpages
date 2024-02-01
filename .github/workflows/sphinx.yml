@@ -1,7 +1,7 @@
 name: Build and Deploy Sphinx Documentation
 
 on:
-  push:
+  push
  # Trigger the workflow on pushes to the sphinx branch
 
 jobs:
