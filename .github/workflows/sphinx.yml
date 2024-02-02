@@ -6,8 +6,8 @@ on:
       - main  # Change this to your source branch name
 
 
-# permissions:
-#   contents: write
+permissions:
+  contents: write
 
 jobs:
   build:
