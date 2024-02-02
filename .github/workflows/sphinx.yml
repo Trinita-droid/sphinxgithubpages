@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 jobs:
-  docs:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,6 +33,7 @@ jobs:
           sphinx-build docs _build/
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
