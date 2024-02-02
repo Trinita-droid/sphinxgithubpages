@@ -1,35 +1,25 @@
-name: Build and Deploy Sphinx Documentation on github pages
 
-on:
-  push
- # Trigger the workflow on pushes to the sphinx branch
-
+name: sphinx documentation
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: write
 jobs:
-  build:
+  docs:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
       - name: Install dependencies
         run: |
-          
-          pip install sphinx
-
-      - name: Build Sphinx documentation
+          pip install sphinx sphinx_rtd_theme myst_parser
+      - name: Sphinx build
         run: |
-          # Replace 'docs' with the actual path to your Sphinx documentation source
-          sphinx-build -b html docs _build/html
-
-      - name: Deploy to gh-pages
-        run: |
-          git checkout -B gh-pages
-          git add -f _build/html
-          git commit -m "Automated Sphinx documentation build"
-          git push origin gh-pages
+          sphinx-build docs docs/_build
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.event_name == 'push' }}
+        with:
+          publish_branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _build
+          force_orphan: true
