@@ -1,34 +1,30 @@
-name: Sphinx Documentation
+name: sphinx documentation
 
-on:
-  push:
-    branches:
-      - main  # Change this to your main branch name
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: write
 
 jobs:
-  build:
+  docs:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9  # Replace with your desired Python version
-
-      - name: Install Dependencies
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - name: Install dependencies
         run: |
           pip install sphinx sphinx_rtd_theme myst_parser
-
-      - name: Build Sphinx Documentation
+      - name: Sphinx build
         run: |
-          make -C docs clean
-          make -C docs html
-
+          sphinx-build docs ..
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         with:
+          publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/_build/
+          publish_dir: _build/
+          force_orphan: true
+
+
+          
