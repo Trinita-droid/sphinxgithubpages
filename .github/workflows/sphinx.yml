@@ -3,42 +3,32 @@ name: Sphinx Documentation
 on:
   push:
     branches:
-      - main  # Change this to your source branch name
-
-
-permissions:
-  contents: write
+      - main  # Change this to your main branch name
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: 3.9  # Replace with your desired Python version
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
-          
           pip install sphinx sphinx_rtd_theme myst_parser
 
-      - name: Build Sphinx documentation
+      - name: Build Sphinx Documentation
         run: |
-          sphinx-build docs _build/
+          make -C docs clean
+          make -C docs html
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.event_name == 'push' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: _build/
+          publish_dir: docs/_build/html
